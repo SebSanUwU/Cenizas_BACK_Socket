@@ -1,18 +1,23 @@
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+
+const PORT = process.env.PORT || 2525;
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: '*',
+  }
+});
+
 const { emit } = require('process');
 
 const MAX_PLAYERS_PER_ROOM = 5;
 const rooms = {};
 const playersConect = {};
 const coordenadas = {};
-
-const app = require('express')();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http, {
-    cors: {
-        origin: "http://localhost:4200",
-        methods: ["GET", "POST"]
-    }
-});
 
 io.on('connection', (socket) => {
     let roomName;
@@ -157,6 +162,6 @@ io.on('connection', (socket) => {
     })
 });
 
-http.listen(2525, () => {
-    console.log('Servidor escuchando en el puerto 2525');
+server.listen(PORT, () => {
+    console.log(`Servidor Socket.io escuchando en el puerto ${PORT}`);
 });
