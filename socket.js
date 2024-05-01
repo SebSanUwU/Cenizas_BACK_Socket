@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('updatePlayers', (data) => {
-        if (rooms[data.code] && rooms[data.code].players) { // Verificar si rooms[roomName] y rooms[roomName].players están definidos
+        if (rooms[data.code] && rooms[data.code].players) { 
             const index = rooms[data.code].players.findIndex(player => player.id === socket.id);
             if (index !== -1) {
                 rooms[data.code].players[index].posx = data.posx;
@@ -64,7 +64,6 @@ io.on('connection', (socket) => {
                 rooms[data.code].players[index].velocityy = data.velocityy;
                 rooms[data.code].players[index].animation = data.animation;
                 rooms[data.code].players[index].key = data.key;
-
             }
             io.to(data.code).emit('updatePlayers', rooms[data.code].players);
         }
@@ -73,6 +72,10 @@ io.on('connection', (socket) => {
     socket.on('goToDesert', (data) => {
         io.to(roomName).emit('turnOffRoom', roomName);
         io.to(roomName).emit('goToDesert', data);
+    });
+
+    socket.on('goToCave', (data) => {
+        io.to(roomName).emit('goToCave', data);
     });
 
     socket.on ('valueCordinates', (data) =>{
