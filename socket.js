@@ -17,9 +17,9 @@ const { emit } = require('process');
 const MAX_PLAYERS_PER_ROOM = 5;
 const rooms = {};
 const playersConect = {};
-const coordenadas = {};
 
 io.on('connection', (socket) => {
+
     let roomName;
     socket.on('joinRoom', (code) => {
         roomName = code;
@@ -120,6 +120,10 @@ io.on('connection', (socket) => {
     socket.on('directionsEnemys', (data) => {
         io.to(data.code).emit('directionsEnemys', data);
     });
+
+    socket.on('deleteItem',(data) =>{
+        io.to(data.code).emit('deleteItem',data);
+    })
 
     socket.on('disconnect', () => {
         for (const roomName in rooms) {
