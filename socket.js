@@ -18,9 +18,14 @@ const MAX_PLAYERS_PER_ROOM = 5;
 const rooms = {};
 const playersConect = {};
 
+const coordenadas = {};
+
+
 io.on('connection', (socket) => {
 
     let roomName;
+    
+
     socket.on('joinRoom', (code) => {
         roomName = code;
         if (!rooms[roomName]) {
@@ -159,9 +164,8 @@ io.on('connection', (socket) => {
             playersConect[data.user] = data.id;
             console.log(`Se ha registrado el jugador ${data.user}`);
         } else {
-            if (playersConect[data.user] != data.id) {
-                playersConect[data.user] = data.id;
-            }
+            console.log(`Ha regresado al registro el jugador ${data.user}`);
+            playersConect[data.user] = data.id;
         }
     })
 });
