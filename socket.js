@@ -70,10 +70,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('goToMain', (data) =>{
-        io.to(roomName).emit('goToMain',data);
-    })
-
     socket.on('goToDesert', (data) => {
         io.to(roomName).emit('turnOffRoom', roomName);
         io.to(roomName).emit('goToDesert', data);
