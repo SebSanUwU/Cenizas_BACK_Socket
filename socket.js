@@ -25,7 +25,6 @@ io.on('connection', (socket) => {
 
     let roomName;
     
-    
     socket.on('joinRoom', (code) => {
         roomName = code;
         if (!rooms[roomName]) {
@@ -70,6 +69,10 @@ io.on('connection', (socket) => {
             io.to(data.code).emit('updatePlayers', rooms[data.code].players);
         }
     });
+
+    socket.on('goToMain', (data) =>{
+        io.to(roomName).emit('goToMain',data);
+    })
 
     socket.on('goToDesert', (data) => {
         io.to(roomName).emit('turnOffRoom', roomName);
