@@ -22,10 +22,11 @@ const playersConect = {};
 
 
 
+
 io.on('connection', (socket) => {
+
     let roomName;
     
-
     socket.on('joinRoom', (code) => {
         roomName = code;
         if (!rooms[roomName]) {
@@ -125,6 +126,10 @@ io.on('connection', (socket) => {
     socket.on('directionsEnemys', (data) => {
         io.to(data.code).emit('directionsEnemys', data);
     });
+
+    socket.on('deleteItem',(data) =>{
+        io.to(data.code).emit('deleteItem',data);
+    })
 
     socket.on('disconnect', () => {
         for (const roomName in rooms) {
