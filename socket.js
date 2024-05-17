@@ -147,7 +147,6 @@ io.on('connection', (socket) => {
         if (playersConect[data.reciever]) {
             console.log(playersConect[data.reciever],playersConect[data.send])
             setTimeout(() => {
-                io.to
                 io.to(playersConect[data.reciever]).emit('friendRequestReceived', data.send);
             }, 2000);
         }

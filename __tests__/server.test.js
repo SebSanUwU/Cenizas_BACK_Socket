@@ -1,12 +1,10 @@
 const io = require('socket.io-client');
-const http = require('http');
 const server = require('../socket.js');
 
 const PORT = process.env.PORT || 2525;
 
 describe('Socket.io Server', () => {
   let clientSocket;
-  let httpServer;
 
   beforeEach((done) => {
     clientSocket = io(`http://localhost:${PORT}`);
