@@ -26,6 +26,8 @@ describe('Socket.io Server', () => {
     server.close(done);
   });
   
+
+
   test('should connect to the server', (done) => {
     expect(clientSocket.connected).toBe(true);
     done();
