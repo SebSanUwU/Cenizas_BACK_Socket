@@ -1,11 +1,13 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 2525;
 
 const app = express();
 const server = http.createServer(app);
+module.exports = server;
 const io = socketIo(server, {
   cors: {
     origin: '*',
@@ -18,7 +20,7 @@ const MAX_PLAYERS_PER_ROOM = 5;
 const rooms = {};
 const playersConect = {};
 
-const coordenadas = {};
+
 
 io.on('connection', (socket) => {
     let roomName;
@@ -84,7 +86,7 @@ io.on('connection', (socket) => {
         const coordenadas = data.validCoordinates;        
         
         function getRandomIndex() {
-            return Math.floor(Math.random() * coordenadas.length);
+            return Math.floor(crypto.getRandomValues() * coordenadas.length);
         }
     
         for (let i = 0; i < 7; i++) {
@@ -138,7 +140,9 @@ io.on('connection', (socket) => {
     socket.on('sendFriendRequest', (data) => {
         console.log(`El usuario con correo electrónico ${data.send} envio una solicitud.`);
         if (playersConect[data.reciever]) {
+            console.log(playersConect[data.reciever],playersConect[data.send])
             setTimeout(() => {
+                io.to
                 io.to(playersConect[data.reciever]).emit('friendRequestReceived', data.send);
             }, 2000);
         }
@@ -147,6 +151,7 @@ io.on('connection', (socket) => {
     socket.on('respondRequest', (data) => {
         console.log(`El usuario con correo electrónico ${data.reciever} responde a solicitud de ${data.send} : ${data.respond}`);
         if (playersConect[data.reciever]) {
+            console.log(playersConect[data.reciever])
             setTimeout(() => {
                 io.to(playersConect[data.send]).emit('friendRequestRespond', data.respond);
             }, 2000);
@@ -157,8 +162,10 @@ io.on('connection', (socket) => {
         if (!playersConect[data.user]) {
             playersConect[data.user] = data.id;
             console.log(`Se ha registrado el jugador ${data.user}`);
+            console.log(data.id)
         } else {
             console.log(`Ha regresado al registro el jugador ${data.user}`);
+            console.log(data.id)
             playersConect[data.user] = data.id;
         }
     })
